@@ -30,5 +30,11 @@ public class UserController {
         return "userController";
     }
 
+    @GetMapping("hello")
+    @ResponseBody
+    public String hello() {
+        return "hello";
+    }
+
 
 }
