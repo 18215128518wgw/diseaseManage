@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>疫情防控情况上报平台</title>
+</head>
+<body>
+<div style="text-align: center">
+    <span style="color: darkslategray; font-size: 30px">学生疫情情况每日上报表</span>
+    <hr/>
+    <form action="info" method="GET">
+        学号：<input type="text" name="code"><br>
+        所在学院：<input type="text" name="college"><br>
+        所在班级：<input type="text" name="classes"><br>
+        上报日期：<input type="text" name="date" th:value="${#dates.format(today,'yyyy-MM-dd HH:MM:SS')}" value="2020-3-7"><br>
+        填报人：<input type="text" name="name"><br>
+        联系电话：<input type="text" name="phone"><br>
+        当前所在省：<input type="text" name="province"><br>
+        当前所在市：<input type="text" name="city"><br>
+        当前所在区：<input type="text" name="area"><br>
+        是否为留校中国学生：<input type="radio" name="StayAtSchool" value="1">是 <input type="radio" name="StayAtSchool" value="0">否<br>
+        是否为武汉籍学生：<input type="radio" name="IfWuhanperson" value="1">是 <input type="radio" name="IfWuhanperson" value="0">否<br>
+        是否为湖北籍（不含武汉）学生：<input type="radio" name="IfHubeiperson" value="1">是 <input type="radio" name="IfHubeiperson" value="0">否<br>
+        是否近14日内与武汉疫区人员接触过：<input type="radio" name="WithWuhanMeet" value="1">是 <input type="radio" name="WithWuhanMeet" value="0">否<br>
+        近14日内与湖北疫区人员（不含武汉)接触过：<input type="radio" name="WithHubeiMeet" value="1">是 <input type="radio" name="WithHubeiMeet" value="0">否<br>
+        是否在武汉：<input type="radio" name="InWuhan" value="1">是 <input type="radio" name="InWuhan" value="0">否<br>
+        是否在湖北（不含武汉）：<input type="radio" name="InHubei" value="1">是 <input type="radio" name="InHubei" value="0">否<br>
+        是否今天从外地返校：<input type="radio" name="BackToSchool" value="1">是 <input type="radio" name="BackToSchool" value="0">否<br>
+        是否有疫情疑似症状：<input type="radio" name="suspect" value="1">是 <input type="radio" name="suspect" value="0">否<br>
+        是否已经确认被感染：<input type="radio" name="infect" value="1">是 <input type="radio" name="infect" value="0">否<br><br>
+        <button type="submit">提交</button>
+    </form>
+</div>
+</body>
+</html>

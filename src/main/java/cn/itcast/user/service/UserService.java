@@ -11,7 +11,7 @@ import java.util.List;
 @Service
 public class UserService {
 
-    @Autowired
+    @Autowired(required = false)
     private UserMapper userMapper;
 
     public User queryUserById(int id) {
