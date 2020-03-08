@@ -74,10 +74,10 @@ public class UserController {
             httpServletResponse.getWriter().flush();
         } else {
             // 查询用户
-            List<User> users = this.userService.queryAll();
-            //System.out.println(users);
+            List<Student> students = this.studentService.queryAll();
+            //System.out.println(students);
             // 放入模型
-            modelMap.addAttribute("admin", users);
+            modelMap.addAttribute("students", students);
             return "admin";
         }
 
