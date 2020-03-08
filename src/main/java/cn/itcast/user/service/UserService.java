@@ -22,6 +22,15 @@ public class UserService {
         return this.userMapper.selectAll();
     }
 
+    public User queryUserByName(String name) {
+
+        User u = new User();
+        u.setName(name);
+
+//        System.out.println(userMapper.selectOne(u));
+        return userMapper.selectOne(u);
+    }
+
     @Transactional
     public void deleteUserById(int id) {
         this.userMapper.deleteByPrimaryKey(id);

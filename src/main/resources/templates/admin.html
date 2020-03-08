@@ -1,14 +1,70 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>疫情防控情况上报平台</title>
+    <title>疫情防控情况管理平台</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <style type="text/css">
+        table {border-collapse: collapse; font-size: 14px; width: 80%; margin: auto}
+        table, th, td {border: 1px solid darkslategray;padding: 10px}
+    </style>
 </head>
 <body>
 <div style="text-align: center">
-    <span style="color: darkslategray; font-size: 30px">疫情防控情况管理平台</span>
-    <hr/>
-    请先登录！
+    <span style="color: darkslategray; font-size: 30px; ">学生信息管理</span>
+    <table class="table-striped table-hover">
+        <tr>
+            <th>id</th>
+            <th>学号</th>
+            <th>学院</th>
+            <th>班级</th>
+            <th>填报日期</th>
+            <th>姓名</th>
+            <th>电话</th>
+            <th>省</th>
+            <th>市</th>
+            <th>区</th>
+            <th>是否留校</th>
+            <th>是否武汉籍学生</th>
+            <th>是否湖北籍学生</th>
+            <th>14天内与武汉疫区人员接触</th>
+            <th>14天内与湖北疫区（不含武汉）人员接触</th>
+            <th>是否在武汉</th>
+            <th>是否在湖北（不含武汉)</th>
+            <th>是否今天返校</th>
+            <th>是否疑似</th>.
+            <th>是否确诊感染</th>
+        </tr>
+        <tr th:each="students : ${students}">
+            <td th:text="${students.id}">0</td>
+            <td th:text="${students.code}">0</td>
+            <td th:text="${students.college}">0</td>
+            <td th:text="${students.classes}">0</td>
+            <td th:text="${students.date}">0</td>
+            <td th:text="${students.name}">0</td>
+            <td th:text="${students.phone}">0</td>
+            <td th:text="${students.province}">0</td>
+            <td th:text="${students.city}">0</td>
+            <td th:text="${students.area}">0</td>
+            <td th:text="${students.stayAtSchool}">0</td>
+            <td th:text="${students.ifWuhanperson}">0</td>
+            <td th:text="${students.ifHubeiperson}">0</td>
+            <td th:text="${students.withWuhanMeet}">0</td>
+            <td th:text="${students.withHubeiMeet}">0</td>
+            <td th:text="${students.inWuhan}">0</td>
+            <td th:text="${students.inHubei}">0</td>
+            <td th:text="${students.backToSchool}">0</td>
+            <td th:text="${students.suspect}">0</td>
+            <td th:text="${students.infect}">0</td>
+        </tr>
+    </table>
 </div>
+
+
+
+<!-- jQuery (Bootstrap 的 JavaScript 插件需要引入 jQuery) -->
+<script src="https://code.jquery.com/jquery.js"></script>
+<!-- 包括所有已编译的插件 -->
+<script src="js/bootstrap.min.js"></script>
 </body>
 </html>

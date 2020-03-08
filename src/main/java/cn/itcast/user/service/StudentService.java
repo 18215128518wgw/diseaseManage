@@ -21,7 +21,7 @@ public class StudentService {
     }
 
     /**
-     * 根据code找到所有打卡记录，遍历记录，判断当天是否打卡
+     * 根据学号找到所有打卡记录，遍历记录，判断当天是否打卡
      * @param code
      * @param date
      * @return
@@ -39,6 +39,16 @@ public class StudentService {
 
         return true;
     }
+
+
+    /**
+     * 查询全部信息
+     * @return
+     */
+    public List<Student> queryAll() {
+        return this.studentMapper.selectAll();
+    }
+
 
     /**
      * 获取日期年份
