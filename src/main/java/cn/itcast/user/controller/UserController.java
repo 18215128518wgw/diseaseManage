@@ -4,7 +4,9 @@ import cn.itcast.user.pojo.Student;
 import cn.itcast.user.pojo.User;
 import cn.itcast.user.service.StudentService;
 import cn.itcast.user.service.UserService;
+import cn.itcast.user.utils.EmpUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,7 +27,7 @@ public class UserController {
     private StudentService studentService;
 
     /**
-     * 根据id查找用户
+     * 根据id查找用户，这是个测试方法。
      * @param id
      * @return
      */
@@ -85,6 +87,24 @@ public class UserController {
 
     }
 
+
+    /**
+     * 从数据库查询要导出到excel的数据
+     * @return
+     */
+    @GetMapping("export")
+    public ResponseEntity<byte[]> exportEmp() {
+        // 查询所有数据
+        List<Student> studentsList = this.studentService.queryAll();
+        return EmpUtils.exportEmp(studentsList);
+    }
+
+
+    /**
+     * 返回admin视图
+     * @param modelmap
+     * @return
+     */
     @GetMapping("admin")
     public String admin(ModelMap modelmap) {
 

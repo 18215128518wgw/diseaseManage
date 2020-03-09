@@ -57,8 +57,15 @@ public class UploadController {
                 httpServletResponse.getWriter().flush();
             }
         }else {
+
+            if(studentService.checkStudentByCode(student.getCode(), student.getDate())) {
+                httpServletResponse.setContentType("text/html;charset=utf-8");
+                httpServletResponse.getWriter().write( "<script>alert('打卡时间超过规定时间！');</script>");
+                httpServletResponse.getWriter().flush();
+            }
+
             httpServletResponse.setContentType("text/html;charset=utf-8");
-            httpServletResponse.getWriter().write( "<script>alert('打卡时间超过规定时间，或者您今日已打卡！');</script>");
+            httpServletResponse.getWriter().write( "<script>alert('您今日已打卡！');</script>");
             httpServletResponse.getWriter().flush();
         }
 

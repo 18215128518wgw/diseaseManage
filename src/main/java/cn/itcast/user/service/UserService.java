@@ -23,11 +23,8 @@ public class UserService {
     }
 
     public User queryUserByName(String name) {
-
         User u = new User();
         u.setName(name);
-
-//        System.out.println(userMapper.selectOne(u));
         return userMapper.selectOne(u);
     }
 

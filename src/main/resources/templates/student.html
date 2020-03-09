@@ -12,11 +12,52 @@
 
     </style>
 </head>
+
+<script type="text/javascript">
+
+    function validate_required(field,alerttxt)
+    {
+        with (field)
+        {
+            if (value==null||value=="")
+                {alert("不能有选项未填写情况！");return false}
+            else {return true}
+        }
+    }
+
+    function validate_form(thisform)
+    {
+        with (thisform)
+        {
+            if (validate_required(code,"code must be filled out!")==false) {code.focus();return false}
+            if (validate_required(college,"college must be filled out!")==false) {college.focus();return false}
+            if (validate_required(classes,"classes must be filled out!")==false) {classes.focus();return false}
+            if (validate_required(date,"date must be filled out!")==false) {date.focus();return false}
+            if (validate_required(name,"name must be filled out!")==false) {name.focus();return false}
+            if (validate_required(phone,"phone must be filled out!")==false) {phone.focus();return false}
+            if (validate_required(province,"province must be filled out!")==false) {province.focus();return false}
+            if (validate_required(city,"city must be filled out!")==false) {city.focus();return false}
+            if (validate_required(area,"area must be filled out!")==false) {area.focus();return false}
+            if (validate_required(StayAtSchool,"StayAtSchool must be filled out!")==false) {return false}
+            if (validate_required(IfWuhanperson,"IfWuhanperson must be filled out!")==false) {return false}
+            if (validate_required(IfHubeiperson,"IfHubeiperson must be filled out!")==false) {return false}
+            if (validate_required(WithWuhanMeet,"WithWuhanMeet must be filled out!")==false) {return false}
+            if (validate_required(WithHubeiMeet,"WithHubeiMeet must be filled out!")==false) {return false}
+            if (validate_required(InWuhan,"InWuhan must be filled out!")==false) {return false}
+            if (validate_required(InHubei,"InHubei must be filled out!")==false) {return false}
+            if (validate_required(BackToSchool,"BackToSchool must be filled out!")==false) {return false}
+            if (validate_required(suspect,"suspect must be filled out!")==false) {return false}
+            if (validate_required(infect,"infect must be filled out!")==false) {return false}
+
+        }
+    }
+</script>
+
 <body>
 <div style="text-align: center">
     <span style="color: darkslategray; font-size: 30px; line-height: 50px;">学生疫情情况每日上报表</span>
     <hr/>
-    <form action="info" method="GET" role="form">
+    <form action="info" method="GET" role="form" onsubmit="return validate_form(this)">
         <div class="form-group">
 
             <label class="col-md-3 control-label">学号：</label>

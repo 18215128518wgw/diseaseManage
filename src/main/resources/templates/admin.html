@@ -8,10 +8,113 @@
         table {border-collapse: collapse; font-size: 14px; width: 80%; margin: auto}
         table, th, td {border: 1px solid darkslategray;padding: 10px}
     </style>
+
 </head>
 <body>
+
+<script src="/js/echarts.js"></script>
+
+<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+<div id="main" style="width: 100%;height:700px;"></div>
+
+<script type="text/javascript" th:inline="javascript">
+    // 基于准备好的dom，初始化echarts实例
+    var myChart = echarts.init(document.getElementById('main'));
+
+    const students = /*[[${students}]]*/ {};
+    // console.log(students);
+
+    var stayAtSchoo = 0, notstayAtSchool = 0;
+    var ifWuhanperson = 0, notifWuhanperson = 0;
+    var ifHubeiperson = 0, notifHubeiperson = 0;
+    var withWuhanMeet = 0, notwithWuhanMeet = 0;
+    var withHubeiMeet = 0, notwithHubeiMeet = 0;
+    var inWuhan = 0, notinWuhan = 0;
+    var inHubei = 0, notinHubei = 0;
+    var backToSchool = 0, notbackToSchool = 0;
+    var suspect = 0, notsuspect = 0;
+    var infect = 0, notinfect = 0;
+
+    for(i = 0,len=students.length; i < len; i++) {
+
+        if(students[i].stayAtSchool == 0) notstayAtSchool++; else stayAtSchoo++;
+        if(students[i].ifWuhanperson == 0) notifWuhanperson++; else ifWuhanperson++;
+        if(students[i].ifHubeiperson == 0) notifHubeiperson++; else ifHubeiperson++;
+        if(students[i].withWuhanMeet == 0) notwithWuhanMeet++; else withWuhanMeet++;
+        if(students[i].withHubeiMeet == 0) notwithHubeiMeet++; else withHubeiMeet++;
+        if(students[i].inWuhan == 0) notinWuhan++; else inWuhan++;
+        if(students[i].inHubei == 0) notinHubei++; else inHubei++;
+        if(students[i].backToSchool == 0) notbackToSchool++; else backToSchool++;
+        if(students[i].suspect == 0) notsuspect++; else suspect++;
+        if(students[i].infect == 0) notinfect++; else infect++;
+
+    }
+    // 指定图表的配置项和数据
+    var option = {
+        title: {
+            text: '学生疫情防控情况',
+            subtext: '纯属虚构'
+        },
+        tooltip: {
+            trigger: 'axis'
+        },
+        legend: {
+            data: ['否', '是']
+        },
+        toolbox: {
+            show: true,
+            feature: {
+                dataView: {show: true, readOnly: false},
+                magicType: {show: true, type: ['line', 'bar']},
+                restore: {show: true},
+                saveAsImage: {show: true}
+            }
+        },
+        calculable: true,
+        xAxis: [
+            {
+                type: 'category',
+                data: ['是否留校', '是否武汉籍学生', '是否湖北籍学生', '14天内与武汉疫区人员接触', '14天内与湖北疫区（不含武汉）人员接触', '是否在武汉', '是否在湖北（不含武汉)', '是否今天返校', '是否疑似', '是否确诊感染']
+            }
+        ],
+        yAxis: [
+            {
+                type: 'value'
+            }
+        ],
+        series: [
+            {
+                name: '否',
+                type: 'bar',
+                data: [notstayAtSchool, notifWuhanperson, notifHubeiperson, notwithWuhanMeet, notwithHubeiMeet, notinWuhan, notinHubei, notbackToSchool, notsuspect, notinfect],
+                markLine: {
+                    data: [
+                        {type: 'average', name: '平均值'}
+                    ]
+                }
+            },
+            {
+                name: '是',
+                type: 'bar',
+                data: [stayAtSchoo, ifWuhanperson, ifHubeiperson, withWuhanMeet, withHubeiMeet, inWuhan, inHubei, backToSchool, suspect, infect],
+                markLine: {
+                    data: [
+                        {type: 'average', name: '平均值'}
+                    ]
+                }
+            }
+        ]
+    };
+
+    // 使用刚指定的配置项和数据显示图表。
+    myChart.setOption(option);
+</script>
+
+
+
 <div style="text-align: center">
-    <span style="color: darkslategray; font-size: 30px; ">学生信息管理</span>
+    <span style="color: darkslategray; font-size: 30px; ">学生信息管理</span><br>
+    <span class="btn btn-info pull-right" style="margin-right: 10%;" onclick="exportEmp()">将表格导出到excel</span><br>
     <table class="table-striped table-hover">
         <tr>
             <th>id</th>
@@ -60,91 +163,35 @@
     </table>
 </div>
 
-<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
-<script src="/js/echarts.js"></script>
-<div id="main" style="width: 1200px;height:600px;"></div>
-<script type="text/javascript">
-    // 基于准备好的dom，初始化echarts实例
-    var myChart = echarts.init(document.getElementById('main'));
-
-    // 指定图表的配置项和数据
-    var option = {
-        title: {
-            text: '某地区蒸发量和降水量',
-            subtext: '纯属虚构'
-        },
-        tooltip: {
-            trigger: 'axis'
-        },
-        legend: {
-            data: ['蒸发量', '降水量']
-        },
-        toolbox: {
-            show: true,
-            feature: {
-                dataView: {show: true, readOnly: false},
-                magicType: {show: true, type: ['line', 'bar']},
-                restore: {show: true},
-                saveAsImage: {show: true}
-            }
-        },
-        calculable: true,
-        xAxis: [
-            {
-                type: 'category',
-                data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月']
-            }
-        ],
-        yAxis: [
-            {
-                type: 'value'
-            }
-        ],
-        series: [
-            {
-                name: '蒸发量',
-                type: 'bar',
-                data: [2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4, 3.3],
-                markPoint: {
-                    data: [
-                        {type: 'max', name: '最大值'},
-                        {type: 'min', name: '最小值'}
-                    ]
-                },
-                markLine: {
-                    data: [
-                        {type: 'average', name: '平均值'}
-                    ]
-                }
-            },
-            {
-                name: '降水量',
-                type: 'bar',
-                data: [2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0, 2.3],
-                markPoint: {
-                    data: [
-                        {name: '年最高', value: 182.2, xAxis: 7, yAxis: 183},
-                        {name: '年最低', value: 2.3, xAxis: 11, yAxis: 3}
-                    ]
-                },
-                markLine: {
-                    data: [
-                        {type: 'average', name: '平均值'}
-                    ]
-                }
-            }
-        ]
-    };
 
 
-    // 使用刚指定的配置项和数据显示图表。
-    myChart.setOption(option);
-</script>
 
 
 <!-- jQuery (Bootstrap 的 JavaScript 插件需要引入 jQuery) -->
 <script src="https://code.jquery.com/jquery.js"></script>
 <!-- 包括所有已编译的插件 -->
+<script src="/js/vue.js"></script>
+<!--引入vue.js-->
 <script src="/js/bootstrap.js"></script>
+
+<script>
+
+    function exportEmp()
+    {
+        this.$confirm('此操作将导出学生数据, 是否继续?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+        }).then(() => {
+            window.open('/user/export', '_parent')
+        }).catch(() => {
+            this.$message({
+                type: 'info',
+                message: '已取消导出'
+            });
+        });
+    }
+
+</script>
 </body>
 </html>

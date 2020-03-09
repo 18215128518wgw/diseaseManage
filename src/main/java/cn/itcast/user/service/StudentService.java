@@ -32,7 +32,7 @@ public class StudentService {
         List<Student> r = studentMapper.select(s);
 
         for (Student student : r) {
-            if(Integer.parseInt(student.getDate().substring(0,4)) == getYear(new Date()) && Integer.parseInt(student.getDate().substring(4,6)) == getMonth(new Date()) && Integer.parseInt(student.getDate().substring(7,9)) == getDay(new Date() )){
+            if(Integer.parseInt(student.getDate().substring(0,4)) == getYear(new Date()) && Integer.parseInt(student.getDate().substring(5,7)) - getMonth(new Date()) == 0 && Integer.parseInt(student.getDate().substring(8,10)) - getDay(new Date()) == 0){
                 return false;
             }
         }
