@@ -4,22 +4,29 @@
     <meta charset="UTF-8">
     <title>疫情防控情况管理平台</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/bootstrap-table.min.css">
     <style type="text/css">
         table {border-collapse: collapse; font-size: 14px; width: 80%; margin: auto}
         table, th, td {border: 1px solid darkslategray;padding: 10px}
     </style>
 </head>
-<body>
+<body style="overflow-x: hidden;">
 
 <script src="/js/echarts.js"></script>
-<!--<script src="../../../../node_modules/echarts/dist/echarts.js"></script>-->
 
 <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
-<div id="main" style="width: 100%;height:700px;"></div>
+<div style="display:inline-block; width: 100%">
+    <div id="main" style="width: 55%;height:400px; float:left;"></div>
+    <div id="main2" style="width: 40%; height: 400px; float:left;"></div>
+</div>
+
+<hr>
+<br>
 
 <script type="text/javascript" th:inline="javascript">
     // 基于准备好的dom，初始化echarts实例
     var myChart = echarts.init(document.getElementById('main'));
+    var myChart2 = echarts.init(document.getElementById('main2'));
 
     const students = /*[[${students}]]*/ {};
     // console.log(students);
@@ -106,94 +113,237 @@
         ]
     };
 
+    //统计学院种类
+    var arr = new Array();
+    var j;
+    for(i = 0,len=students.length; i < len; i++) {
+        if(arr.includes(students[i].college)) {
+            i++;
+        }else {
+            arr.push(students[i].college);
+        }
+    }
+
+    //统计各学院累计签到次数
+    var arrI = new Array();
+    for(j = 0; j < arr.length; j++) {
+        arrI[j] = 1;
+        for(i = 0,len=students.length; i < len; i++) {
+            if(students[i].college == arr[j]) {
+                arrI[j] ++;
+            }
+        }
+    }
+
+    var option2 = {
+        title: {
+            text: '各学院填报情况',
+            subtext: '纯属虚构',
+            right: 10
+        },tooltip: {
+            trigger: 'item',
+            formatter: '{a} <br/>{b}: {c} ({d}%)'
+        },
+        legend: {
+            orient: 'vertical',
+            left: 10,
+            data: ['驱蚊器', '旅游', '物理', '计算机学院', '小仙女学院','数统','计算机']
+            // data: s              //这里有bug，但我不会改
+        },
+        series: [
+            {
+                name: '所属学院',
+                type: 'pie',
+                radius: '55%',
+                center: ['50%', '60%'],
+                data: [
+                    { value: arrI.pop(), name: arr.pop()},
+                    { value: arrI.pop(), name: arr.pop()},
+                    { value: arrI.pop(), name: arr.pop()},
+                    { value: arrI.pop(), name: arr.pop()},
+                    { value: arrI.pop(), name: arr.pop()},
+                    { value: arrI.pop(), name: arr.pop()},
+                    { value: arrI.pop(), name: arr.pop()}
+                ],
+                emphasis: {
+                    itemStyle: {
+                        shadowBlur: 10,
+                        shadowOffsetX: 0,
+                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                    }
+                }
+            }
+        ]
+    };
+
+
     // 使用刚指定的配置项和数据显示图表。
     myChart.setOption(option);
+    myChart2.setOption(option2);
 </script>
 
 
 
-<div style="text-align: center">
+<div style="text-align: center; ">
     <span style="color: darkslategray; font-size: 30px; ">学生信息管理</span><br>
     <span class="btn btn-info pull-right" style="margin-right: 10%;" onclick="exportEmp1()">将表格导出到excel</span><br>
-    <table class="table-striped table-hover">
-        <tr>
-            <th>id</th>
-            <th>学号</th>
-            <th>学院</th>
-            <th>班级</th>
-            <th>填报日期</th>
-            <th>姓名</th>
-            <th>电话</th>
-            <th>省</th>
-            <th>市</th>
-            <th>区</th>
-            <th>是否留校</th>
-            <th>是否武汉籍学生</th>
-            <th>是否湖北籍学生</th>
-            <th>14天内与武汉疫区人员接触</th>
-            <th>14天内与湖北疫区（不含武汉）人员接触</th>
-            <th>是否在武汉</th>
-            <th>是否在湖北（不含武汉)</th>
-            <th>是否今天返校</th>
-            <th>是否疑似</th>.
-            <th>是否确诊感染</th>
-        </tr>
-        <tr th:each="students : ${students}" >
-            <td th:text="${students.id}">0</td>
-            <td th:text="${students.code}">0</td>
-            <td th:text="${students.college}">0</td>
-            <td th:text="${students.classes}">0</td>
-            <td th:text="${students.date}">0</td>
-            <td th:text="${students.name}">0</td>
-            <td th:text="${students.phone}">0</td>
-            <td th:text="${students.province}">0</td>
-            <td th:text="${students.city}">0</td>
-            <td th:text="${students.area}">0</td>
-            <td th:text="${students.stayAtSchool}">0</td>
-            <td th:text="${students.ifWuhanperson}">0</td>
-            <td th:text="${students.ifHubeiperson}">0</td>
-            <td th:text="${students.withWuhanMeet}">0</td>
-            <td th:text="${students.withHubeiMeet}">0</td>
-            <td th:text="${students.inWuhan}">0</td>
-            <td th:text="${students.inHubei}">0</td>
-            <td th:text="${students.backToSchool}">0</td>
-            <td th:text="${students.suspect}">0</td>
-            <td th:text="${students.infect}">0</td>
-        </tr>
+    <table class="table-striped table-hover" id="mytable">
+<!--        <tr>-->
+<!--            <th>id</th>-->
+<!--            <th>学号</th>-->
+<!--            <th>学院</th>-->
+<!--            <th>班级</th>-->
+<!--            <th>填报日期</th>-->
+<!--            <th>姓名</th>-->
+<!--            <th>电话</th>-->
+<!--            <th>省</th>-->
+<!--            <th>市</th>-->
+<!--            <th>区</th>-->
+<!--            <th>是否留校</th>-->
+<!--            <th>是否武汉籍学生</th>-->
+<!--            <th>是否湖北籍学生</th>-->
+<!--            <th>14天内与武汉疫区人员接触</th>-->
+<!--            <th>14天内与湖北疫区（不含武汉）人员接触</th>-->
+<!--            <th>是否在武汉</th>-->
+<!--            <th>是否在湖北（不含武汉)</th>-->
+<!--            <th>是否今天返校</th>-->
+<!--            <th>是否疑似</th>.-->
+<!--            <th>是否确诊感染</th>-->
+<!--        </tr>-->
+<!--        <tr th:each="students : ${students}" >-->
+<!--            <td th:text="${students.id}">0</td>-->
+<!--            <td th:text="${students.code}">0</td>-->
+<!--            <td th:text="${students.college}">0</td>-->
+<!--            <td th:text="${students.classes}">0</td>-->
+<!--            <td th:text="${students.date}">0</td>-->
+<!--            <td th:text="${students.name}">0</td>-->
+<!--            <td th:text="${students.phone}">0</td>-->
+<!--            <td th:text="${students.province}">0</td>-->
+<!--            <td th:text="${students.city}">0</td>-->
+<!--            <td th:text="${students.area}">0</td>-->
+<!--            <td th:text="${students.stayAtSchool}">0</td>-->
+<!--            <td th:text="${students.ifWuhanperson}">0</td>-->
+<!--            <td th:text="${students.ifHubeiperson}">0</td>-->
+<!--            <td th:text="${students.withWuhanMeet}">0</td>-->
+<!--            <td th:text="${students.withHubeiMeet}">0</td>-->
+<!--            <td th:text="${students.inWuhan}">0</td>-->
+<!--            <td th:text="${students.inHubei}">0</td>-->
+<!--            <td th:text="${students.backToSchool}">0</td>-->
+<!--            <td th:text="${students.suspect}">0</td>-->
+<!--            <td th:text="${students.infect}">0</td>-->
+<!--        </tr>-->
     </table>
 </div>
 
 
 
-
-
 <!-- jQuery (Bootstrap 的 JavaScript 插件需要引入 jQuery) -->
 <script src="https://code.jquery.com/jquery.js"></script>
+<!--引入bootstrap-table.min.js-->
+<script src="/js/bootstrap-table.min.js"></script>
 <!--引入vue.js-->
-<script src="/js/vue.js"></script>
+<!--<script src="/js/vue.js"></script>-->
 <!-- 包括所有已编译的插件 -->
 <script src="/js/bootstrap.js"></script>
 
 <script>
 
-    function exportEmp() {
-        this.$confirm('此操作将导出学生数据, 是否继续?', '提示', {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            type: 'warning'
-        }).then(() => {
-            window.open('/user/export', '_parent')
-        }).catch(() => {
-            this.$message({
-                type: 'info',
-                message: '已取消导出'
-            });
-        });
-    }
-
     function exportEmp1() {
         window.open('/user/export', '_parent')
     }
+
+    $(document).ready(function () {
+
+        $("#mytable").bootstrapTable({
+            url:"findAll",  //请求地址
+            striped : true, //是否显示行间隔色
+            pageNumber : 1, //初始化加载第一页
+            pagination : true,//是否分页
+            sidePagination : 'client',//server:服务器端分页|client：前端分页
+            pageSize : 6,//单页记录数
+            pageList : [ 5, 10],//可选择单页记录数
+            paginationDetailHAlign:' hidden',//隐藏单页记录数
+            showRefresh : false,//刷新按钮
+            columns : [ {
+                title : 'id',
+                field : 'id',
+                sortable : true
+            }, {
+                title : '学号',
+                field : 'code',
+                sortable : true
+            }, {
+                title : '学院',
+                field : 'college',
+                sortable : true
+            },{
+                title : '填报日期',
+                field : 'date',
+                sortable : true
+            },{
+                title : '姓名',
+                field : 'name',
+                sortable : true
+            },{
+                title : '电话',
+                field : 'phone',
+                sortable : true
+            },{
+                title : '省',
+                field : 'province',
+                sortable : true
+            },{
+                title : '市',
+                field : 'city',
+                sortable : true
+            },{
+                title : '区',
+                field : 'area',
+                sortable : true
+            },{
+                title : '是否留校',
+                field : 'stayAtSchool',
+                sortable : true
+            },{
+                title : '是否武汉籍学生',
+                field : 'ifWuhanperson',
+                sortable : true
+            },{
+                title : '是否湖北籍学生',
+                field : 'ifHubeiperson',
+                sortable : true
+            },{
+                title : '14天内与武汉疫区人员接触',
+                field : 'withWuhanMeet',
+                sortable : true
+            },{
+                title : '14天内与湖北疫区（不含武汉）人员接触',
+                field : 'withHubeiMeet',
+                sortable : true
+            },{
+                title : '是否在武汉',
+                field : 'inWuhan',
+                sortable : true
+            },{
+                title : '是否在湖北（不含武汉)',
+                field : 'inHubei',
+                sortable : true
+            },{
+                title : '是否今天返校',
+                field : 'backToSchool',
+                sortable : true
+            },{
+                title : '是否疑似',
+                field : 'suspect',
+                sortable : true
+            },{
+                title : '是否确诊感染',
+                field : 'infect',
+                sortable : true
+            }]
+        })
+    })
+
 
 </script>
 </body>

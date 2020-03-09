@@ -57,8 +57,7 @@ public class UploadController {
                 httpServletResponse.getWriter().flush();
             }
         }else {
-
-            if(studentService.checkStudentByCode(student.getCode(), student.getDate())) {
+            if(studentService.checkStudentByCode(student.getCode(), student.getDate()) && getHour(new Date()) > 20) {
                 httpServletResponse.setContentType("text/html;charset=utf-8");
                 httpServletResponse.getWriter().write( "<script>alert('打卡时间超过规定时间！');</script>");
                 httpServletResponse.getWriter().flush();
@@ -75,11 +74,11 @@ public class UploadController {
 
 
     /**
-     * 功能描述：返回小时
+     * 功能描述：返回小时 int
      *
      * @param date
      *
-     * @return 返回小时
+     * @return Integer 返回小时
      */
     public static int getHour(Date date) {
         Calendar calendar = Calendar.getInstance();

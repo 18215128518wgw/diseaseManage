@@ -32,6 +32,8 @@ public class StudentService {
         List<Student> r = studentMapper.select(s);
 
         for (Student student : r) {
+//            System.out.println(Integer.parseInt(student.getDate().substring(5,7)));
+//            System.out.println(getMonth(new Date()));
             if(Integer.parseInt(student.getDate().substring(0,4)) == getYear(new Date()) && Integer.parseInt(student.getDate().substring(5,7)) - getMonth(new Date()) == 0 && Integer.parseInt(student.getDate().substring(8,10)) - getDay(new Date()) == 0){
                 return false;
             }
