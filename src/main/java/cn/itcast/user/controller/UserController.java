@@ -26,6 +26,9 @@ public class UserController {
     @Autowired
     private StudentService studentService;
 
+    int checkCount=0;
+
+
     /**
      * 根据id查找用户，这是个测试方法。
      * @param id
@@ -59,6 +62,10 @@ public class UserController {
      */
     @GetMapping("check")
     public String check(ModelMap modelMap, HttpServletResponse httpServletResponse, String username, String password) throws Exception {
+
+        //大致统计网站访问次数
+        checkCount++;
+        System.out.println(checkCount);
 
         User user = userService.queryUserByName(username);
 

@@ -1,5 +1,13 @@
 # diseaseManage（学生疫情防控平台）
 
+### 在线查看
+学生疫情上报：[http://kpgs.natapp1.cc](http://kpgs.natapp1.cc)
+后台管理员查看地址：[http://kpgs.natapp1.cc/user/login](http://kpgs.natapp1.cc/user/login)
+
+   > 用户名：test
+   >
+   > 密码：1
+
 ### 介绍
 学生疫情防控平台
 
@@ -27,3 +35,4 @@ web页面使用thymeleaaf模板引擎
    > 用户名：test
    >
    > 密码：1
+3. 推荐使用google浏览器查看
