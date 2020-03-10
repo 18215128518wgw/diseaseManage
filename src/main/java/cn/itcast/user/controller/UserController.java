@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -69,6 +70,7 @@ public class UserController {
         //大致统计网站访问次数
         checkCount++;
         System.out.println(checkCount);
+        System.out.println(new Date());
 
         User user = userService.queryUserByName(username);
 

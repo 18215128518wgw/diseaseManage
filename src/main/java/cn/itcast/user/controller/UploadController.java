@@ -51,21 +51,25 @@ public class UploadController {
                 httpServletResponse.setContentType("text/html;charset=utf-8");
                 httpServletResponse.getWriter().write("<script>alert('今日情况已上报成功！');</script>");
                 httpServletResponse.getWriter().flush();
+                System.out.println("上传成功");
             }else {
                 httpServletResponse.setContentType("text/html;charset=utf-8");
                 httpServletResponse.getWriter().write( "<script>alert('上报失败，请重新上报！');</script>");
                 httpServletResponse.getWriter().flush();
+                System.out.println("上传失败");
             }
         }else {
             if(studentService.checkStudentByCode(student.getCode(), student.getDate()) && getHour(new Date()) > 20) {
                 httpServletResponse.setContentType("text/html;charset=utf-8");
                 httpServletResponse.getWriter().write( "<script>alert('打卡时间超过规定时间！');</script>");
                 httpServletResponse.getWriter().flush();
+                System.out.println("打卡超时");
+            } else {
+                httpServletResponse.setContentType("text/html;charset=utf-8");
+                httpServletResponse.getWriter().write( "<script>alert('您今日已打卡！');</script>");
+                httpServletResponse.getWriter().flush();
+                System.out.println("重新打卡");
             }
-
-            httpServletResponse.setContentType("text/html;charset=utf-8");
-            httpServletResponse.getWriter().write( "<script>alert('您今日已打卡！');</script>");
-            httpServletResponse.getWriter().flush();
         }
 
         model.addAttribute("today", new Date());
