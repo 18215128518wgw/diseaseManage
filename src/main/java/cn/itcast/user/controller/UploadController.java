@@ -18,6 +18,8 @@ public class UploadController {
     @Autowired
     private StudentService studentService;
 
+    int checkCountq = 1;
+
     /**
      * 返回页面视图
      * @param model
@@ -26,6 +28,8 @@ public class UploadController {
     @GetMapping("index")
     public String StudentUpload(Model model){
 
+        System.out.println("前台网站访问次数：" + checkCountq + "    时间：" + new Date());
+        checkCountq++;
         model.addAttribute("today", new Date());
         return "student";
 
@@ -59,16 +63,16 @@ public class UploadController {
                 System.out.println("上传失败");
             }
         }else {
-            if(studentService.checkStudentByCode(student.getCode(), student.getDate()) && getHour(new Date()) > 20) {
+            if(getHour(new Date()) < 20 && !studentService.checkStudentByCode(student.getCode(), student.getDate())) {
+                httpServletResponse.setContentType("text/html;charset=utf-8");
+                httpServletResponse.getWriter().write( "<script>alert('您今日已打卡！');</script>");
+                httpServletResponse.getWriter().flush();
+                System.out.println("重复打卡");
+            } else {
                 httpServletResponse.setContentType("text/html;charset=utf-8");
                 httpServletResponse.getWriter().write( "<script>alert('打卡时间超过规定时间！');</script>");
                 httpServletResponse.getWriter().flush();
                 System.out.println("打卡超时");
-            } else {
-                httpServletResponse.setContentType("text/html;charset=utf-8");
-                httpServletResponse.getWriter().write( "<script>alert('您今日已打卡！');</script>");
-                httpServletResponse.getWriter().flush();
-                System.out.println("重新打卡");
             }
         }
 

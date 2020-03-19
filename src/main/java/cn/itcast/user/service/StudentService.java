@@ -24,7 +24,7 @@ public class StudentService {
      * 根据学号找到所有打卡记录，遍历记录，判断当天是否打卡
      * @param code
      * @param date
-     * @return
+     * @return  若验证成功，返回假
      */
     public boolean checkStudentByCode(String code, String date) {
         Student s = new Student();

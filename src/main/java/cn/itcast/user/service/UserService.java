@@ -22,10 +22,11 @@ public class UserService {
         return this.userMapper.selectAll();
     }
 
-    public User queryUserByName(String name) {
+    public List<User> queryUserByName(String name) {
         User u = new User();
         u.setName(name);
-        return userMapper.selectOne(u);
+//        return userMapper.selectOne(u);
+        return userMapper.selectAll();
     }
 
     @Transactional

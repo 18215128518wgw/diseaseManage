@@ -8,7 +8,6 @@ import cn.itcast.user.utils.EmpUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,9 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Controller
 @RequestMapping("user")
@@ -67,22 +64,22 @@ public class UserController {
     @GetMapping("check")
     public String check(ModelMap modelMap, HttpServletResponse httpServletResponse, String username, String password) throws Exception {
 
-        //大致统计网站访问次数
+        //大致统计后台网站访问次数
         checkCount++;
-        System.out.println(checkCount);
-        System.out.println(new Date());
+        System.out.println("后台网站访问次数：" + checkCount + "    时间：" + new Date());
+        System.out.println(username + " , " + password);
 
-        User user = userService.queryUserByName(username);
+        List<User> user = userService.queryUserByName(username);
 
         if(user == null) {
             httpServletResponse.setContentType("text/html;charset=utf-8");
             httpServletResponse.getWriter().write("<script>alert('用户不存在！');</script>");
             httpServletResponse.getWriter().flush();
-        } else if(!user.getPassword().equals(password)) {
+        } else if(!user.get(0).getPassword().equals(password)) {
             httpServletResponse.setContentType("text/html;charset=utf-8");
             httpServletResponse.getWriter().write("<script>alert('密码输入错误！');</script>");
             httpServletResponse.getWriter().flush();
-        } else if(Integer.parseInt(user.getStatus()) != 1) {
+        } else if(Integer.parseInt(user.get(0).getStatus()) != 1) {
             httpServletResponse.setContentType("text/html;charset=utf-8");
             httpServletResponse.getWriter().write("<script>alert('用户状态被锁定，暂时无法登录！');</script>");
             httpServletResponse.getWriter().flush();
@@ -106,6 +103,8 @@ public class UserController {
      */
     @GetMapping("export")
     public ResponseEntity<byte[]> exportEmp() {
+
+        System.out.println("执行导出excel操作");
         // 查询所有数据
         List<Student> studentsList = this.studentService.queryAll();
         return EmpUtils.exportEmp(studentsList);
