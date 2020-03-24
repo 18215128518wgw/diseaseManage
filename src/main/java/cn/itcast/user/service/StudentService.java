@@ -44,6 +44,18 @@ public class StudentService {
 
 
     /**
+     * 根据学院找到所有学生
+     * @param college
+     * @return List<Student>
+     */
+    public List<Student> queryStudentByCollege(String college) {
+        Student s = new Student();
+        s.setCollege(college);
+        return studentMapper.select(s);
+    }
+
+
+    /**
      * 查询全部信息
      * @return
      */

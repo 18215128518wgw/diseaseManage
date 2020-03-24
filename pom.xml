@@ -19,7 +19,7 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
         <!--jdbc的启动器，默认使用HikariCP连接池-->
-        <dependency>
+        <dependency>   
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-jdbc</artifactId>
         </dependency>
@@ -57,6 +57,33 @@
             <groupId>org.apache.poi</groupId>
             <artifactId>poi</artifactId>
             <version>4.1.1</version>
+        </dependency>
+
+<!--        &lt;!&ndash;httpcomponents的包&ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>org.apache.httpcomponents</groupId>-->
+<!--            <artifactId>httpclient</artifactId>-->
+<!--            <version>4.5.5</version>-->
+<!--        </dependency>-->
+
+<!--        &lt;!&ndash;JSONobject的包&ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>net.sf.json-lib</groupId>-->
+<!--            <artifactId>json-lib</artifactId>-->
+<!--            <version>2.4</version>-->
+<!--            <classifier>jdk15</classifier>-->
+<!--        </dependency>-->
+
+        <dependency>
+            <groupId>commons-httpclient</groupId>
+            <artifactId>commons-httpclient</artifactId>
+            <version>3.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>dom4j</groupId>
+            <artifactId>dom4j</artifactId>
+            <version>1.1</version>
         </dependency>
 
     </dependencies>

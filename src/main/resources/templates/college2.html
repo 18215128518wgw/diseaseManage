@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>疫情上报管理</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="/plugins/fontawesome-free/css/all.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- Tempusdominus Bbootstrap 4 -->
+    <link rel="stylesheet" href="/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="/css/adminlte.min.css">
+    <!-- Google Font: Source Sans Pro -->
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+    <style>
+        .w-container {
+            position: relative;
+            margin: auto;
+            overflow: hidden;
+            width: 100%;
+            height: 180px;
+        }
+
+        #w-timer {
+            color: #F6F4F3;
+            text-align: center;
+            text-transform: uppercase;
+            font-family: "Lato", sans-serif;
+            font-size: .8em;
+            letter-spacing: 5px;
+        }
+
+        .w-days, .w-hours, .w-minutes, .w-seconds, .w-seconds2, .w-seconds3 {
+            display: inline-block;
+            padding: 15px;
+            width: 140px;
+            margin: 10px;
+            border-radius: 5px;
+        }
+
+        .w-days {
+            background: #EF2F3C;
+        }
+
+        .w-hours {
+            background: #4EC699;
+        }
+
+        .w-minutes {
+            background: #276FBF;
+        }
+
+        .w-seconds {
+            background: #F0A202;
+        }
+
+        .w-seconds2 {
+            background: #3BA9CC;
+        }
+
+        .w-seconds3 {
+            background: #9A5FB9;
+        }
+
+        .w-numbers {
+            font-family: "Montserrat", sans-serif;
+            color: #183059;
+            font-size: 4.1em;
+
+        }
+    </style>
+</head>
+<body class="hold-transition sidebar-mini layout-fixed">
+<div class="wrapper">
+
+    <!-- Navbar -->
+    <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+        <!-- Left navbar links -->
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a>
+            </li>
+            <li class="nav-item d-none d-sm-inline-block">
+                <a href="#" class="nav-link">疫情信息管理平台</a>
+            </li>
+        </ul>
+
+        <!-- Right navbar links -->
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <form id="quit" method="GET" action="quit"></form>
+                <a class="nav-link" href="javascript:void(0)" th:onclick="quit()">退出</a>
+            </li>
+        </ul>
+    </nav>
+    <!-- /.navbar -->
+
+    <!-- Main Sidebar Container -->
+    <aside class="main-sidebar sidebar-dark-primary elevation-4">
+        <!-- Brand Logo -->
+        <a href="#" class="brand-link">
+            <img src="/images/logo.jpg" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
+                 style="opacity: .8">
+            <span class="brand-text font-weight-light">AdminLTE 3</span>
+        </a>
+
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <!-- Sidebar user panel (optional) -->
+            <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                <div class="image">
+                    <img src="/images/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+                </div>
+                <div class="info">
+                    <a href="#" class="d-block" th:text="${value}">学院名</a>
+                </div>
+            </div>
+            <!-- /.sidebar-menu -->
+        </div>
+        <!-- /.sidebar -->
+    </aside>
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <div class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <span style="font-size: 32px;" th:text="'（' + ${value} + '）情况概览'"></span>
+                    </div><!-- /.col -->
+                </div><!-- /.row -->
+            </div><!-- /.container-fluid -->
+        </div>
+        <!-- /.content-header -->
+
+        <!-- Main content -->
+        <div class="w-container">
+            <div id="w-timer">
+                <div class="w-days">
+                    <div class="w-numbers" id="w-days">---</div>当日填报数
+                </div>
+                <div class="w-hours">
+                    <div class="w-numbers" id="w-hours">---</div>当日留校人数
+                </div>
+                <div class="w-minutes">
+                    <div class="w-numbers" id="w-minutes">---</div>当日返校人数
+                </div>
+                <div class="w-seconds">
+                    <div class="w-numbers" id="w-seconds">---</div>当日疑似感染
+                </div>
+                <div class="w-seconds2">
+                    <div class="w-numbers" id="w-seconds2">---</div>当日确诊感染
+                </div>
+                <div class="w-seconds3">
+                    <div class="w-numbers" id="w-seconds3">---</div>开学倒计时
+                </div>
+            </div>
+        </div>
+        <section class="content">
+            <div class="container-fluid">
+                <!-- Main row -->
+                <div class="row">
+                    <!-- Left col -->
+                    <section class="col-lg-12 connectedSortable">
+                        <!-- Custom tabs (Charts with tabs)-->
+                        <div class="card">
+                            <div class="card-header">
+                                <table id="example1" class="table table-bordered table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th>学号</th>
+                                        <th>班级</th>
+                                        <th>填报日期</th>
+                                        <th>姓名</th>
+                                        <th>电话</th>
+                                        <th>省</th>
+                                        <th>市</th>
+                                        <th>区</th>
+                                        <th>今天返校</th>
+                                        <th>疑似感染</th>.
+                                        <th>确诊感染</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="students : ${students}">
+                                        <td th:text="${students.code}">0</td>
+                                        <td th:text="${students.classes}">0</td>
+                                        <td th:text="${students.date}">0</td>
+                                        <td th:text="${students.name}">0</td>
+                                        <td th:text="${students.phone}">0</td>
+                                        <td th:text="${students.province}">0</td>
+                                        <td th:text="${students.city}">0</td>
+                                        <td th:text="${students.area}">0</td>
+                                        <td th:text="${students.backToSchool} == 1 ? '是' : '否'">0</td>
+                                        <td th:text="${students.suspect} == 1 ? '是' : '否'">0</td>
+                                        <td th:text="${students.infect} == 1 ? '是' : '否'">0</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <!-- /.card -->
+                    </section>
+                    <!-- /.Left col -->
+                </div>
+                <!-- /.row (main row) -->
+            </div><!-- /.container-fluid -->
+        </section>
+        <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+
+    <footer class="main-footer">
+        <strong>Copyright &copy; <a href="#">Wangguow</a>.</strong>
+        All rights reserved.
+    </footer>
+
+    <!-- Control Sidebar -->
+    <aside class="control-sidebar control-sidebar-dark">
+        <!-- Control sidebar content goes here -->
+    </aside>
+    <!-- /.control-sidebar -->
+</div>
+<!-- ./wrapper -->
+
+<!-- jQuery -->
+<script src="/plugins/jquery/jquery.min.js"></script>
+<!-- Bootstrap 3 -->
+<script src="/js/bootstrap.js"></script>
+<!-- Bootstrap 4 -->
+<script src="/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- DataTables -->
+<script src="/plugins/datatables/jquery.dataTables.js"></script>
+<script src="/plugins/datatables-bs4/js/dataTables.bootstrap4.js"></script>
+<!-- AdminLTE App -->
+<script src="/js/adminlte.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="/js/demo.js"></script>
+
+<script type="text/javascript" th:inline="javascript">
+
+    function c(obj) {
+        obj.submit();
+    }
+
+    function quit() {
+        $('#quit').submit();
+    }
+
+    $(function () {
+        $("#example1").DataTable();
+    });
+
+    $(document).ready(function () {
+        const student = /*[[${students}]]*/ {};
+        var date = new Date();
+        var students = new Array();
+        var dailyPut = 0;
+        var stayAtSchool = 0;
+        var backToSchool = 0;
+        var suspect = 0;
+        var infect = 0;
+
+        month = date.getMonth()+1; //获取当前月份(0-11,0代表1月)
+        m = (month < 10 ? '0' + month : '' + month).toString();
+        day = date.getDate(); //获取当前日(1-31)
+        d = (day < 10 ? '0' + day : '' + day).toString();
+
+        for(i = 0,len=student.length; i < len; i++) {
+            var a = student[i].date.substring(0, 10);
+            var strs= new Array(); //定义一数组
+            strs=a.split("-"); //字符分割
+            if(strs[1] == m && strs[2] == d) {
+                dailyPut++;
+                students.push(student[i]);
+            }
+        }
+
+        for(i = 0,len=students.length; i < len; i++) {
+            if(students[i].stayAtSchool == 1) stayAtSchool++;
+            if(students[i].backToSchool == 1) backToSchool++;
+            if(students[i].suspect == 1) suspect++;
+            if(students[i].infect == 1) infect++;
+        }
+
+        $('#w-days').html(dailyPut);
+        $('#w-hours').html(stayAtSchool);
+        $('#w-minutes').html(backToSchool);
+        $('#w-seconds').html(suspect);
+        $('#w-seconds2').html(infect);
+        $('#w-seconds3').html("1");
+    })
+
+</script>
+</body>
+</html>
