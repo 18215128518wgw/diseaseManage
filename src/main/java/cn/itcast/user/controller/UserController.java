@@ -35,7 +35,7 @@ public class UserController {
     @Autowired
     private TeacherService teacherService;
 
-    int checkCount=0;
+//    int checkCount=0;
     int msgCount = 7;
 
     /**
@@ -66,9 +66,9 @@ public class UserController {
     public String check(ModelMap modelMap, HttpServletResponse httpServletResponse, String username, String password) throws Exception {
 
         //大致统计后台网站访问次数
-        checkCount++;
-        System.out.println("后台网站访问次数：" + checkCount + "    时间：" + new Date());
-        System.out.println(username + " , " + password);
+//        checkCount++;
+//        System.out.println("后台网站访问次数：" + checkCount + "    时间：" + new Date());
+//        System.out.println(username + " , " + password);
 
         List<College> colleges = collegeService.querypasswordByCollege(username);
 
@@ -115,33 +115,34 @@ public class UserController {
         List<String> collegeName = this.collegeService.queryKindOfCollege().stream().map(College::getCollege).collect(Collectors.toList());
         // 放入模型
         modelMap.addAttribute("collegeName", collegeName);
+        modelMap.addAttribute("msgCount", msgCount);
         return "login";
 
     }
 
-//    /**
-//     * 返回主界面视图
-//     * @param modelMap
-//     * @return
-//     */
-//    @GetMapping("admin")
-//    public String admin(ModelMap modelMap) {
-//        // 查询用户
-//        List<Student> students = this.studentService.queryAll();
-//        // 放入模型
-//        modelMap.addAttribute("students", students);
-//
-//        // 查询用户
-//        List<Teacher> teachers = this.teacherService.queryAll();
-//        // 放入模型
-//        modelMap.addAttribute("teachers", teachers);
-//
-//        List<String> collegeName = this.collegeService.queryKindOfCollege().stream().map(College::getCollege).collect(Collectors.toList());
-//        // 放入模型
-//        collegeName.remove(0);
-//        modelMap.addAttribute("collegeName", collegeName);
-//        return "admin2";
-//    }
+    /**
+     * 返回主界面视图
+     * @param modelMap
+     * @return
+     */
+    @GetMapping("admin")
+    public String admin(ModelMap modelMap) {
+        // 查询用户
+        List<Student> students = this.studentService.queryAll();
+        // 放入模型
+        modelMap.addAttribute("students", students);
+
+        // 查询用户
+        List<Teacher> teachers = this.teacherService.queryAll();
+        // 放入模型
+        modelMap.addAttribute("teachers", teachers);
+
+        List<String> collegeName = this.collegeService.queryKindOfCollege().stream().map(College::getCollege).collect(Collectors.toList());
+        // 放入模型
+        collegeName.remove(0);
+        modelMap.addAttribute("collegeName", collegeName);
+        return "admin2";
+    }
 
     @GetMapping("addCollege")
     public String addCollege(ModelMap modelMap) {
@@ -257,6 +258,7 @@ public class UserController {
         List<String> collegeName = this.collegeService.queryKindOfCollege().stream().map(College::getCollege).collect(Collectors.toList());
         // 放入模型
         model.addAttribute("collegeName", collegeName);
+        model.addAttribute("msgCount", msgCount);
         return "login";
     }
 
@@ -269,8 +271,8 @@ public class UserController {
 
 
         try {
-//            MsgUtils.SendSms(phoneNumber);
-            System.out.println(phoneNumber);
+            MsgUtils.SendSms(phoneNumber);
+//            System.out.println(phoneNumber);
             msgCount -- ;
         } catch (Exception e) {
             httpServletResponse.setContentType("text/html;charset=utf-8");
