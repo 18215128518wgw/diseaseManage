@@ -22,7 +22,25 @@
 
             <input class="btn btn-danger" value="登录" type="submit">
 
+        </form><br><br><br><br><br>
+        <form class="form" method="GET" action="sendMsg">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        定时填报提醒测试
+                    </h3>
+                </div>
+                <div class="panel-body">
+                    <input class="form-control" name="phoneNumber" placeholder="输入手机号码"  type="text"><br>
+                    由于是测试项目，没有经费，选用短信API的是测试版本，故没有办法定制短信内容，为证明程序正确，当您开始测试之后，您会收到一条验证码为8888的短信
+                    <br>
+                    <span th:text="'剩余短信条数:' + ${msgCount}"></span>
+                    <br>
+                    <input class="btn" value="开始短信测试" type="submit">
+                </div>
+            </div>
         </form>
+
     </div>
 
 </div>

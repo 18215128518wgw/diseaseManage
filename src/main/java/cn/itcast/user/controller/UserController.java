@@ -18,6 +18,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,7 +35,8 @@ public class UserController {
     @Autowired
     private TeacherService teacherService;
 
-//    int checkCount=0;
+    int checkCount=0;
+    int msgCount = 7;
 
     /**
      * 登陆方法
@@ -47,6 +49,8 @@ public class UserController {
         List<String> collegeName = this.collegeService.queryKindOfCollege().stream().map(College::getCollege).collect(Collectors.toList());
         // 放入模型
         model.addAttribute("collegeName", collegeName);
+        model.addAttribute("msgCount", msgCount);
+
         return "login";
     }
 
@@ -62,9 +66,9 @@ public class UserController {
     public String check(ModelMap modelMap, HttpServletResponse httpServletResponse, String username, String password) throws Exception {
 
         //大致统计后台网站访问次数
-//        checkCount++;
-//        System.out.println("后台网站访问次数：" + checkCount + "    时间：" + new Date());
-//        System.out.println(username + " , " + password);
+        checkCount++;
+        System.out.println("后台网站访问次数：" + checkCount + "    时间：" + new Date());
+        System.out.println(username + " , " + password);
 
         List<College> colleges = collegeService.querypasswordByCollege(username);
 
@@ -115,29 +119,29 @@ public class UserController {
 
     }
 
-    /**
-     * 返回主界面视图
-     * @param modelMap
-     * @return
-     */
-    @GetMapping("admin")
-    public String admin(ModelMap modelMap) {
-        // 查询用户
-        List<Student> students = this.studentService.queryAll();
-        // 放入模型
-        modelMap.addAttribute("students", students);
-
-        // 查询用户
-        List<Teacher> teachers = this.teacherService.queryAll();
-        // 放入模型
-        modelMap.addAttribute("teachers", teachers);
-
-        List<String> collegeName = this.collegeService.queryKindOfCollege().stream().map(College::getCollege).collect(Collectors.toList());
-        // 放入模型
-        collegeName.remove(0);
-        modelMap.addAttribute("collegeName", collegeName);
-        return "admin2";
-    }
+//    /**
+//     * 返回主界面视图
+//     * @param modelMap
+//     * @return
+//     */
+//    @GetMapping("admin")
+//    public String admin(ModelMap modelMap) {
+//        // 查询用户
+//        List<Student> students = this.studentService.queryAll();
+//        // 放入模型
+//        modelMap.addAttribute("students", students);
+//
+//        // 查询用户
+//        List<Teacher> teachers = this.teacherService.queryAll();
+//        // 放入模型
+//        modelMap.addAttribute("teachers", teachers);
+//
+//        List<String> collegeName = this.collegeService.queryKindOfCollege().stream().map(College::getCollege).collect(Collectors.toList());
+//        // 放入模型
+//        collegeName.remove(0);
+//        modelMap.addAttribute("collegeName", collegeName);
+//        return "admin2";
+//    }
 
     @GetMapping("addCollege")
     public String addCollege(ModelMap modelMap) {
@@ -256,45 +260,31 @@ public class UserController {
         return "login";
     }
 
-//    @GetMapping("sendMsg")
-//    @ResponseBody
-//    public String sengMsg() {
-//        MsgUtils.SendSms();
-//        System.out.println("发送短信");
-//        return "成功";
-//    }
-
-
-
-//    ------------------------------------------------------------------------------------------------
-    /**
-     * 返回admin视图, 这是旧版视图
-     * @param modelmap
-     * @return
-     */
-    @GetMapping("adm")
-    public String adm(ModelMap modelmap) {
-        // 查询用户
-        List<Student> students = this.studentService.queryAll();
+    @GetMapping("sendMsg")
+    public String sengMsg(String phoneNumber, Model model, HttpServletResponse httpServletResponse) throws Exception {
+        List<String> collegeName = this.collegeService.queryKindOfCollege().stream().map(College::getCollege).collect(Collectors.toList());
         // 放入模型
-        modelmap.addAttribute("students", students);
-        return "admin";
-    }
+        model.addAttribute("collegeName", collegeName);
+        model.addAttribute("msgCount", msgCount);
 
 
-    /**
-     *查询全部信息，这是测试方法
-     * @param model
-     * @return
-     */
-    @GetMapping("/")
-    public String all(ModelMap model) {
-        // 查询用户
-        List<User> users = this.userService.queryAll();
-        // 放入模型
-        model.addAttribute("users", users);
-        // 返回模板名称（就是classpath:/templates/目录下的html文件名）
-        return "users";
+        try {
+//            MsgUtils.SendSms(phoneNumber);
+            System.out.println(phoneNumber);
+            msgCount -- ;
+        } catch (Exception e) {
+            httpServletResponse.setContentType("text/html;charset=utf-8");
+            httpServletResponse.getWriter().write("<script>alert('短信下发失败，可能是免费条数用完了，也可能是手机号填错了');</script>");
+            httpServletResponse.getWriter().flush();
+        } finally {
+            httpServletResponse.setContentType("text/html;charset=utf-8");
+            httpServletResponse.getWriter().write("<script>alert('短信下发成功！');</script>");
+            httpServletResponse.getWriter().flush();
+        }
+
+        model.addAttribute("msgCount", msgCount);
+        System.out.println("发送短信");
+        return "login";
     }
 
 
